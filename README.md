@@ -20,9 +20,18 @@ Before you begin, ensure you have the following installed on your machine:
 - **Dev Containers** - Extension for VSCode: An extension that lets you use a Docker container as a full-featured development environment. [Get the Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ## Installation & Setup
-1. **Clone the repository**: `git clone https://github.com/simonthorell/cpp-mqtt-sqlite`
-2. **Navigate to the project directory**: `cd cpp-mqtt-sqlite`
-3. **Open the project in VSCode**: `code .`
+1. **Clone the repository**: 
+```bash
+git clone https://github.com/simonthorell/cpp-mqtt-sqlite
+```
+2. **Navigate to the project directory**:
+```bash 
+cd cpp-mqtt-sqlite
+```
+3. **Open the project in VSCode**: 
+```bash 
+code .
+```
 - After opening the project, VSCode may automatically prompt you to reopen the project in a dev container. If not, proceed with the next steps.
 4. **Reopen in Container**: [alternative]
     - Press `F1` to open the Command Palette.
@@ -41,8 +50,13 @@ Before you begin, ensure you have the following installed on your machine:
 - Hash the salted password using OpenSSL's EVP with SHA256.
 - Store the email, hashed password, and salt in the SQLite database.
 
-## Dev Container Setup [not-required]
-If you use this repository, a Debian 12 environment is already set up and ready to use. Below are the basic steps to set up a new `.devcontainer` using the VSCode Extension `Dev Containers`.
+## Additional Information
+
+### Preconfigured Debian 12 Environment
+If you use this repository, a Debian 12 environment is already set up and ready to use. This environment is provided as a Docker container for your convenience.
+
+### Setting Up a Development Container
+Below are the basic steps to configure a new **.devcontainer** using the VSCode Extension **Dev Containers**:
 
 1. **Create New Environment**: 
    - Press `F1` to open the Command Palette.
@@ -68,9 +82,6 @@ If you use this repository, a Debian 12 environment is already set up and ready 
 4. **Use the Devcontainer**:
    - After the container is built and VS Code has connected to it, you can start coding with your environment already set up.
    - The terminal in VS Code will be within the container, and any terminal commands you run will execute there.
-
-## CI/CD Setup [optional]
-- Details to be added...
 
 ### Useful Docker Commands
 ```bash
@@ -100,6 +111,9 @@ docker images
 # Remove an image
 docker rmi [IMAGE_ID]
 ```
+
+### Continuous Integration and Deployment (CI/CD) Configuration with GitHub Actions
+- Details to be added... // ST 2024-02-04
 
 ## Security Notes
 - Ensure that the MQTT broker is properly secured and only authorized clients can publish or subscribe to topics.
