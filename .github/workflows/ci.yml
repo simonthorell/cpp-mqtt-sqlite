@@ -19,7 +19,7 @@ jobs:
 
     # Run commands inside the Docker container
     - name: Configure CMake
-      run: docker run --rm my-dev-container cmake -S . -B build
+      run: docker run --rm -v $PWD:/project -w /project my-dev-container cmake -S . -B build
 
     - name: Build
       run: docker run --rm my-dev-container cmake --build build

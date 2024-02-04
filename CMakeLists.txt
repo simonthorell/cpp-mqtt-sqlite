@@ -6,16 +6,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Fetch external libraries
-include(FetchContent)
+# include(FetchContent)
 
 #======================= Fetch JSON =======================#
 
-FetchContent_Declare(
-  nlohmann_json
-  GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG v3.11.3
-)
-FetchContent_MakeAvailable(nlohmann_json)
+# FetchContent_Declare(
+#   nlohmann_json
+#   GIT_REPOSITORY https://github.com/nlohmann/json.git
+#   GIT_TAG v3.11.3
+# )
+# FetchContent_MakeAvailable(nlohmann_json)
 
 #==========================================================#
 

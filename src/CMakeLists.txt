@@ -7,7 +7,7 @@ target_include_directories(MyProjectLib PUBLIC ../include) # Use ../include here
 
 # Uncomment to link against external libraries
 target_link_libraries(MyProjectLib PRIVATE
-    nlohmann_json::nlohmann_json
+    # nlohmann_json::nlohmann_json
 )
 
 # Creates the main executable for the project.
