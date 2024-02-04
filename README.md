@@ -44,6 +44,11 @@ If you use this repository, a Debian 12 environment is already set up and ready 
 1. **Create New Environment**: 
    - Press `F1` to open the Command Palette.
    - Type `Dev Containers: Add Development Container Configuration Files...` and select it.
+   - Select `Add configuration to user data folder`.
+   - Search for `C++` and select the C++ devcontainer template.
+   - Select `debian-12` (or latest version).
+   - Select the latest version in the list (currently 3.22.2).
+   - In the list **Select Features**, you can just click OK to configure later.
    - Choose a predefined container configuration or your own `Dockerfile`.
    - A new `.devcontainer` folder with `devcontainer.json` and a `Dockerfile` will be created in your project root.
 
