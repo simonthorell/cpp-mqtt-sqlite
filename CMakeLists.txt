@@ -5,8 +5,29 @@ project(MyProject)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Optional - include external libraries
-# include(FetchContent)
+# Include external libraries
+include(FetchContent)
+
+#====================== Fetch openSSL ======================#
+FetchContent_Declare(
+  openssl
+  GIT_REPOSITORY https://github.com/openssl/openssl
+  GIT_TAG openssl-3.2.0 # Update with latest version
+)
+FetchContent_MakeAvailable(openssl)
+
+# Find OpenSSL
+find_package(OpenSSL REQUIRED)
+
+#======================= Fetch JSON =======================#
+
+# Fetch Nolhmann JSON -Uncomment below to use
+FetchContent_Declare(
+  nlohmann_json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.11.3
+)
+FetchContent_MakeAvailable(nlohmann_json)
 
 # Fetch libcurl -Uncomment below to use
 # FetchContent_Declare(
@@ -15,14 +36,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #   GIT_TAG curl-8_5_0
 # )
 # FetchContent_MakeAvailable(libcurl)
-
-# Fetch Nolhmann JSON -Uncomment below to use
-# FetchContent_Declare(
-#   nlohmann_json
-#   GIT_REPOSITORY https://github.com/nlohmann/json.git
-#   GIT_TAG v3.11.3
-# )
-# FetchContent_MakeAvailable(nlohmann_json)
 
 # Add the subdirectories
 add_subdirectory(src)
