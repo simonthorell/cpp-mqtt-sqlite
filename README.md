@@ -1,7 +1,10 @@
 # C++ Backend for MQTT-TLS with SQLite Storage
 
 ## Overview
-This C++ backend application is designed to securely handle user credentials through a series of robust cryptographic operations. The system subscribes to an MQTT broker using TLS connections to ensure secure message transmission. Published messages, containing user credentials (email and password), are encrypted with AES256 and need to be decrypted upon receipt. The application then applies further security measures before storing these credentials into a SQLite database. The entire application is containerized using Docker to ensure consistency across different environments and ease of deployment.
+**For Use with the ESP32 MQTT Credential Publisher:**
+[ESP32 MQTT Credential Publisher](https://github.com/simonthorell/esp32-lvgl-hid).
+
+This C++ backend application is designed to securely handle user credentials through a series of robust cryptographic operations. The system subscribes to an MQTT broker using TLS connections to ensure secure message transmission. Published messages, containing user credentials (email and password), are encrypted with AES256 and need to be decrypted upon receipt. The application then applies further security measures before storing these credentials into a SQLite database. The entire application is containerized using Docker to ensure consistency across different environments and ease of deployment.  
 
 ## Features
 - **MQTT TLS Subscription**: Securely subscribes to an MQTT broker, ensuring that all data received is encrypted during transit.
