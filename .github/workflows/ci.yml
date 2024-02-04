@@ -1,0 +1,35 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Build the Docker image from your Dockerfile
+    - name: Build Docker Image
+      run: docker build . --file Dockerfile --tag my-dev-container
+
+    # Run commands inside the Docker container
+    - name: Configure CMake
+      run: docker run --rm my-dev-container cmake -S . -B build
+
+    - name: Build
+      run: docker run --rm my-dev-container cmake --build build
+
+    - name: Test
+      run: docker run --rm --workdir /github/workspace/build my-dev-container ctest -C Debug
+
+    # If you want to upload the build artifacts (like executables), you can use this step
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: cpp-mqtt-sqlite
+        path: build/

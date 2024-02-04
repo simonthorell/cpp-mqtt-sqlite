@@ -1,27 +1,15 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.28.2)
 project(MyProject)
 
 # Specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Include external libraries
+# Fetch external libraries
 include(FetchContent)
-
-#====================== Fetch openSSL ======================#
-FetchContent_Declare(
-  openssl
-  GIT_REPOSITORY https://github.com/openssl/openssl
-  GIT_TAG openssl-3.2.0 # Update with latest version
-)
-FetchContent_MakeAvailable(openssl)
-
-# Find OpenSSL
-find_package(OpenSSL REQUIRED)
 
 #======================= Fetch JSON =======================#
 
-# Fetch Nolhmann JSON -Uncomment below to use
 FetchContent_Declare(
   nlohmann_json
   GIT_REPOSITORY https://github.com/nlohmann/json.git
@@ -29,13 +17,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-# Fetch libcurl -Uncomment below to use
-# FetchContent_Declare(
-#   libcurl
-#   GIT_REPOSITORY https://github.com/curl/curl.git
-#   GIT_TAG curl-8_5_0
-# )
-# FetchContent_MakeAvailable(libcurl)
+#==========================================================#
 
 # Add the subdirectories
 add_subdirectory(src)
