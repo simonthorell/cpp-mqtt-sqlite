@@ -11,27 +11,87 @@ This C++ backend application is designed to securely handle user credentials thr
 - **Dockerized Application**: Encapsulates the application and its environment in a Docker container for easy deployment and scalability.
 
 ## Prerequisites
-- Docker installed on your machine.
-- OpenSSL for encryption and decryption operations.
-- An MQTT broker with TLS support.
-- SQLite3 for database operations.
-- A C++ environment with support for standard libraries.
+Before you begin, ensure you have the following installed on your machine:
+- **Docker**: A containerization platform. [Download Docker](https://docs.docker.com/get-docker/)
+- **Visual Studio Code (VSCode)**: A source-code editor. [Download VSCode](https://code.visualstudio.com/download)
+- **Dev Containers** - Extension for VSCode: An extension that lets you use a Docker container as a full-featured development environment. [Get the Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ## Installation & Setup
 1. **Clone the repository**: `git clone https://github.com/simonthorell/cpp-mqtt-sqlite`
 2. **Navigate to the project directory**: `cd cpp-mqtt-sqlite`
-3. **Build the Docker image**: `docker build -t cpp-mqtt-sqlite .`
-4. **Run the Docker container**: `docker run -d --name cpp-mqtt-sqlite-container cpp-mqtt-sqlite`
+3. **Open the project in VSCode**: `code .`
+- After opening the project, VSCode may automatically prompt you to reopen the project in a dev container. If not, proceed with the next steps.
+4. **Reopen in Container**: [alternative]
+    - Press `F1` to open the Command Palette.
+    - Type `Dev Containers: Rebuild and Reopen in Container`, and select it.
+    - VSCode will build the Docker container based on the .devcontainer settings. This might take some time the first time as it needs to download the base image and install all dependencies.
+    - After the container is built, you can start developing within the VSCode environment, with all dependencies and extensions already set up as specified in your .devcontainer configuration.
+    - Remember, after the initial setup, every time you open the project in VSCode, you can directly start working inside the containerized environment, ensuring consistency across your development team.
 
 ## Usage
 1. **Start the MQTT broker** with TLS support and ensure it's correctly configured.
 2. **Run the Docker container**. It will automatically subscribe to the MQTT topic and wait for incoming messages.
-3. **Publish encrypted user credentials** (email and password) to the MQTT broker. Ensure each message includes the user's email, encrypted password, and IV for AES256 decryption.
+3. **Publish encrypted user credentials** (email and password) to the MQTT broker. Ensure each message includes the user's email, encrypted password, and IV (Initialization Vector) for AES256 decryption.
 4. The application will:
 - Decrypt the message using AES256.
 - Generate a random salt and append it to the decrypted password.
 - Hash the salted password using OpenSSL's EVP with SHA256.
 - Store the email, hashed password, and salt in the SQLite database.
+
+## Dev Container Setup [not-required]
+If you use this repository, a Debian 12 environment is already set up and ready to use. Below are the basic steps to set up a new `.devcontainer` using the VSCode Extension `Dev Containers`.
+
+1. **Create New Environment**: 
+   - Press `F1` to open the Command Palette.
+   - Type `Dev Containers: Add Development Container Configuration Files...` and select it.
+   - Choose a predefined container configuration or your own `Dockerfile`.
+   - A new `.devcontainer` folder with `devcontainer.json` and a `Dockerfile` will be created in your project root.
+
+2. **Customize the Configuration**:
+   - Modify the `devcontainer.json` and `Dockerfile` as needed to fit your project's requirements.
+   - You can specify settings, port forwards, extensions, and more in `devcontainer.json`.
+   - Add any necessary system packages, libraries, or tools in the `Dockerfile`.
+
+3. **Reopen in Container**:
+   - With the `.devcontainer` folder in place, you can now reopen your project in a container.
+   - Press `F1`, type `Dev Containers: Reopen in Container`, and select it.
+   - VS Code will build the container (if it's the first time or if there are changes) and then connect to it.
+
+4. **Use the Devcontainer**:
+   - After the container is built and VS Code has connected to it, you can start coding with your environment already set up.
+   - The terminal in VS Code will be within the container, and any terminal commands you run will execute there.
+
+## CI/CD Setup [optional]
+- Details to be added...
+
+### Useful Docker Commands
+```bash
+cd .devcontainer
+
+# Clean cache
+docker builder prune -a
+
+# Rebuild Devcontainer
+docker build -t cpp-mqtt-sqlite .
+
+# Run Container
+docker run -it --rm cpp-mqtt-sqlite
+
+# List running containers
+docker ps
+
+# Stop a running container
+docker stop [CONTAINER_ID or NAMES]
+
+# Remove a container
+docker rm [CONTAINER_ID or NAMES]
+
+# List all images
+docker images
+
+# Remove an image
+docker rmi [IMAGE_ID]
+```
 
 ## Security Notes
 - Ensure that the MQTT broker is properly secured and only authorized clients can publish or subscribe to topics.
