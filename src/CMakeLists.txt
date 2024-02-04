@@ -1,18 +1,24 @@
-# Collects all .cpp files from current and subdirectories into SOURCE_FILES
+#============= Find All Source Files ===============#
 file(GLOB_RECURSE SOURCE_FILES "*.cpp")
 
-# Creates a static library named MyProjectLib from the collected source files
+#============ Find External Libraries ==============#
 add_library(MyProjectLib ${SOURCE_FILES})
-target_include_directories(MyProjectLib PUBLIC ../include) # Use ../include here
-
-# Uncomment to link against external libraries
-target_link_libraries(MyProjectLib PRIVATE
-    # nlohmann_json::nlohmann_json
+target_include_directories(MyProjectLib PUBLIC
+    ../include PRIVATE 
+    ${json_SOURCE_DIR}/include
 )
 
-# Creates the main executable for the project.
+#============ Link external libraries ==============#
+target_link_libraries(MyProjectLib PRIVATE
+    nlohmann_json::nlohmann_json
+)
+
+#=============== Add the executable ================#
 add_executable(MyProject ${SOURCE_FILES})
 target_include_directories(MyProject PUBLIC "../include")
 
+#========= Link against static libraries ===========#
 # Uncomment to link against external libraries
-# target_link_libraries(MyProject PRIVATE)
+target_link_libraries(MyProject PRIVATE 
+    MyProjectLib # Link against the static library
+)
