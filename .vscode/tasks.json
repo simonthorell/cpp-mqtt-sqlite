@@ -24,7 +24,7 @@
         {
             "label": "Run Debug Binary",
             "type": "shell",
-            "command": "${workspaceFolder}/build/debug/MyProject",
+            "command": "${workspaceFolder}/build/debug/cpp-mqtt-sqlite",
             "group": "build",
             "presentation": {
                 "reveal": "always",
@@ -36,7 +36,7 @@
         {
             "label": "Run Release Binary",
             "type": "shell",
-            "command": "${workspaceFolder}/build/release/MyProject",
+            "command": "${workspaceFolder}/build/release/cpp-mqtt-sqlite",
             "group": "build",
             "presentation": {
                 "reveal": "always",

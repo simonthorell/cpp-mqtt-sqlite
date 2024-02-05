@@ -6,14 +6,14 @@ set(SOURCE_FILES
 message(STATUS "Source files: ${SOURCE_FILES}")
 
 #================= Find Libraries =================#
-add_library(MyProjectLib ${SOURCE_FILES})
-target_include_directories(MyProjectLib PUBLIC
+add_library(${PROJECT_NAME}-lib ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME}-lib PUBLIC
     ../include
     ${json_SOURCE_DIR}/include
 )
 
 #============ Link external libraries ==============#
-target_link_libraries(MyProjectLib PRIVATE
+target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     nlohmann_json::nlohmann_json
     OpenSSL::Crypto
     paho-mqtt3as
@@ -26,4 +26,4 @@ add_executable(${PROJECT_NAME} main.cpp) # Only compile main.cpp for the executa
 target_include_directories(${PROJECT_NAME} PUBLIC ../include)
 
 #========= Link against static libraries ===========#
-target_link_libraries(${PROJECT_NAME} MyProjectLib)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
