@@ -5,12 +5,12 @@ file(GLOB_RECURSE SOURCE_FILES "*.cpp")
 add_library(MyProjectLib ${SOURCE_FILES})
 target_include_directories(MyProjectLib PUBLIC
     ../include PRIVATE 
-    ${json_SOURCE_DIR}/include
+    # ${json_SOURCE_DIR}/include
 )
 
 #============ Link external libraries ==============#
 target_link_libraries(MyProjectLib PRIVATE
-    nlohmann_json::nlohmann_json
+    # nlohmann_json::nlohmann_json
 )
 
 #=============== Add the executable ================#
