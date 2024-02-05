@@ -32,8 +32,12 @@ else()
 endif()
 
 #================= Find Installed Packages ================#
-find_package(OpenSSL REQUIRED)
+find_library(PAHO_MQTT3AS_LIBRARY # Find Paho MQTT C library
+    NAMES paho-mqtt3as
+    PATHS /usr/local/lib
+)
 find_package(PahoMqttCpp REQUIRED)
+find_package(OpenSSL REQUIRED)
 find_package(SQLite3 REQUIRED)
 
 #======================= Fetch JSON =======================#
