@@ -1,6 +1,10 @@
 #============= Find All Source Files ===============#
 set(SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_file.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/aes_decryptor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/hash_generator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/mqtt_handler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/salt_generator.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/sqlite_database.cpp
 )
 
 message(STATUS "Source files: ${SOURCE_FILES}")
@@ -22,8 +26,10 @@ target_link_libraries(${PROJECT_NAME}-lib PRIVATE
 )
 
 #=============== Add the executable ================#
-add_executable(${PROJECT_NAME} main.cpp) # Only compile main.cpp for the executable
+# Only compile main.cpp for the executable
+add_executable(${PROJECT_NAME} main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ../include)
 
 #========= Link against static libraries ===========#
+# Link the other libraries against the executable
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)

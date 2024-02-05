@@ -1,0 +1,4 @@
+#ifndef HASH_GENERATOR_H
+#define HASH_GENERATOR_H
+
+#endif // HASH_GENERATOR_H

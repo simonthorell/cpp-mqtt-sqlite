@@ -1,0 +1,4 @@
+#ifndef SALT_GENERATOR_H
+#define SALT_GENERATOR_H
+
+#endif // SALT_GENERATOR_H

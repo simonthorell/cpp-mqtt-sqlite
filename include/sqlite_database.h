@@ -1,0 +1,4 @@
+#ifndef SQLITE_DATABASE_H
+#define SQLITE_DATABASE_H
+
+#endif // SQLITE_DATABASE_H
