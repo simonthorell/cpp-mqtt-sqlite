@@ -1,6 +1,6 @@
 #============= Find All Source Files ===============#
 set(SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/aes_decryptor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/aes256_decryptor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/hash_generator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/mqtt_handler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/salt_generator.cpp
