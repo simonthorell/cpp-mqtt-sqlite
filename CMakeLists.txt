@@ -1,5 +1,6 @@
+#================== CMake Configuration ===================#
 cmake_minimum_required(VERSION 3.28.2)
-project(cpp-mqtt-sqlite)
+project(cpp-mqtt-sqlite) # Project name
 
 #=================== Set C++ Standard ====================#
 set(CMAKE_CXX_STANDARD 20)
@@ -40,8 +41,9 @@ find_package(PahoMqttCpp REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(SQLite3 REQUIRED)
 
-#======================= Fetch JSON =======================#
-include(FetchContent) # Fetch external libraries
+#==================== Fetch Libraries =====================#
+# Fetch external libraries
+include(FetchContent)
 
 # Fetch the JSON library as it's a header-only library
 FetchContent_Declare(
