@@ -14,6 +14,9 @@ SQLiteDatabase::~SQLiteDatabase() {
 }
 
 int SQLiteDatabase::callback(void* NotUsed, int argc, char** argv, char** azColName) {
+    (void)NotUsed; // Explicitly cast to void
+    (void)azColName; // Explicitly cast to void
+    
     for (int i = 0; i < argc; i++) {
         std::cout << (i > 0 ? ":" : "") // Add a colon before each field after the first
                   << (argv[i] ? argv[i] : "NULL");
