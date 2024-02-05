@@ -17,13 +17,14 @@
 	// Configure tool-specific properties.
 	"customizations": {
 		"extensions": [
-			"ms-vscode.cpptools",      // C/C++ Extension
-			"ms-vscode.cmake-tools",   // CMake Tools
-			"twxs.cmake"               // CMake Extension    
+			"ms-vscode.cpptools",         // C/C++ Extension
+			"ms-vscode.cmake-tools",      // CMake Tools
+			"twxs.cmake"                 // CMake Extension
 		],
 		"vscode": {
 			"extensions": [
-				"tal7aouy.icons" // Custom VS-Code Icons
+				"tal7aouy.icons",                        // Custom VS-Code Icons
+				"bierner.markdown-preview-github-styles" // Markdown Preview Github Styles
 			]
 		}
 	},

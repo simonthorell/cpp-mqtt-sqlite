@@ -2,6 +2,23 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "CMake Clean Build", // Keeping _deps folder
+            "type": "shell",
+            "command": "find . -mindepth 1 -maxdepth 1 ! -name '_deps' -exec rm -rf {} +",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
             // Debug task
             "label": "CMake Build Task",
             "type": "shell",

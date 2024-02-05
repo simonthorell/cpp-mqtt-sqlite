@@ -24,6 +24,7 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # Git, OpenSSL, and SSL development libraries are required to build the dependencies
 RUN apt-get update && apt-get install -y \
     git \
+    ninja-build \
     openssl \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*

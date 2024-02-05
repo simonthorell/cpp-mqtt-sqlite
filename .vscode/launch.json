@@ -12,7 +12,7 @@
             "environment": [],
             "externalConsole": false, // Set to true in order to use MacOS terminal instead of VSCode terminal
             "MIMode": "lldb",
-            "preLaunchTask": "CMake Build Task" // Replace with your build task name
+            // "preLaunchTask": "CMake Build Task" // Replace with your build task name
         }
     ]
 }
