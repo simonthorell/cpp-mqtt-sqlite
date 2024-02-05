@@ -21,12 +21,13 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-# Git, OpenSSL, and SSL development libraries are required to build the dependencies
+# Git, OpenSSL, SSL and SQLite3 development libraries are required to build the dependencies
 RUN apt-get update && apt-get install -y \
     git \
     ninja-build \
     openssl \
     libssl-dev \
+    sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 #==============================================================================
