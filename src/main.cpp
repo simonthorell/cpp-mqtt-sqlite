@@ -1,5 +1,11 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include <csignal>
+#include <atomic>
+
 #include "mqtt_handler.h"
+#include "json_parser.h"
 #include "aes256_decryptor.h"
 #include "salt_generator.h"
 #include "hash_generator.h"
@@ -11,8 +17,19 @@
 #define MQTT_TOPIC "test/topic"
 #define MQTT_QOS 1
 
+std::atomic<bool> interrupted(false);
+
+void signalHandler(int signum) {
+    std::cout << "Interrupt signal (" << signum << ") received.\n";
+    interrupted.store(true);
+}
+
 int main() {
-    // Create a new database
+    // Set up signal handling to terminate the application
+    signal(SIGINT, signalHandler);
+    signal(SIGTERM, signalHandler);
+
+    // Create a new SQLite3 database
     SQLiteDatabase db("sql_database.db");
 
     // Define the schema for the users table
@@ -27,42 +44,26 @@ int main() {
         return -1;
     }
 
+    // Create a new JSONParser (JSON parsing, base64/hex decoding and AES-256 decryption)
+    JSONParser jsonParser;
+
     // Initialize the MQTTHandler
-    MQTTHandler mqtt(MQTT_BROKER_URI, MQTT_CLIENT_ID, MQTT_TOPIC, MQTT_QOS);
+    MQTTHandler mqtt(MQTT_BROKER_URI, MQTT_CLIENT_ID, MQTT_TOPIC, MQTT_QOS, db, jsonParser);
 
     mqtt.connect();    // Connect to the MQTT broker
     mqtt.subscribe();  // Subscribe to the topic
 
-    // Wait for messages to arrive and handle here...
-    while (true) {
-        // TODO: Parse the JSON message from the MQTT topic
-        // TODO: Decrypt email & password using AES256 Decryptor
-
-        // Dummy user data (Replace with decrypted data from MQTT message)
-        std::string email = "user@example.com";
-        std::string password = "password"; // Store a hashed password, not plain text
-
-        // Generate a secure, random salt for each password
-        SaltGenerator saltGenerator;
-        std::string salt = saltGenerator.generateSalt(12);
-
-        // Salt & Hash the password
-        HashGenerator hashGenerator;
-        std::string saltedPassword = password + salt;
-        std::string hashedPassword = hashGenerator.computeSHA256(saltedPassword);
-
-        // Insert user data into the users table
-        if (!db.insert("users", "email, password, salt", "'" + email + "', '" + hashedPassword + "', '" + salt + "'")) {
-            std::cerr << "Data insertion failed!" << std::endl;
-            return -1;
-        }
+    // Keep the program running until interrupted from signal
+    while (!interrupted.load()) {
+        // All incoming messages are handled by the MQTTHandler::handleMessage method
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     // Print all data from the users table in SQL database
-    if (!db.selectAllFromTable("users")) {
-        std::cerr << "Failed to select data!" << std::endl;
-        return -1;
-    }
+    // if (!db.selectAllFromTable("users")) {
+    //     std::cerr << "Failed to select data!" << std::endl;
+    //     return -1;
+    // }
 
     // Disconnect from the MQTT broker
     mqtt.disconnect();
