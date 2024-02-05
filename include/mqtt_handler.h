@@ -6,6 +6,9 @@
 #include "sqlite_database.h"   // SQLiteDatabase class
 #include "json_parser.h"       // JSON parser class
 
+// QoS for MQTT messages (0 = at most once, 1 = at least once, 2 = exactly once)
+#define MQTT_QOS 1
+
 class MQTTHandler {
 private:
     mqtt::client client;

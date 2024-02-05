@@ -4,6 +4,7 @@
 #include <csignal>
 #include <atomic>
 
+#include "config.h"
 #include "mqtt_handler.h"
 #include "json_parser.h"
 #include "aes256_decryptor.h"
@@ -11,20 +12,18 @@
 #include "hash_generator.h"
 #include "sqlite_database.h"
 
-// TODO: Replace with secrets from a secure location
-#define MQTT_BROKER_URI "tcp://localhost:1883"
-#define MQTT_CLIENT_ID "client1"
-#define MQTT_TOPIC "test/topic"
-#define MQTT_QOS 1
-
 std::atomic<bool> interrupted(false);
 
+// Signal handler to terminate the application
 void signalHandler(int signum) {
     std::cout << "Interrupt signal (" << signum << ") received.\n";
     interrupted.store(true);
 }
 
 int main() {
+    // Load the configuration file (default if config.json does not exist)
+    Config config("config_default.json", "config.json");
+
     // Set up signal handling to terminate the application
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
@@ -44,18 +43,21 @@ int main() {
         return -1;
     }
 
-    // Create a new JSONParser (JSON parsing, base64/hex decoding and AES-256 decryption)
+    // Create new JSONParser (Also base64/hex decode and AES-256 decrypt)
     JSONParser jsonParser;
 
     // Initialize the MQTTHandler
-    MQTTHandler mqtt(MQTT_BROKER_URI, MQTT_CLIENT_ID, MQTT_TOPIC, MQTT_QOS, db, jsonParser);
+    MQTTHandler mqtt(config.getMqttBrokerURI(), 
+                     config.getMqttClientId(), 
+                     config.getMqttPassword(), 
+                     MQTT_QOS, db, jsonParser);
 
     mqtt.connect();    // Connect to the MQTT broker
     mqtt.subscribe();  // Subscribe to the topic
 
     // Keep the program running until interrupted from signal
     while (!interrupted.load()) {
-        // All incoming messages are handled by the MQTTHandler::handleMessage method
+        // Incoming messages are handled by MQTTHandler::handleMessage
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

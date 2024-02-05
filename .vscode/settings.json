@@ -91,6 +91,7 @@
         "fstream": "cpp",
         "future": "cpp",
         "cinttypes": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "shared_mutex": "cpp"
     }
 }

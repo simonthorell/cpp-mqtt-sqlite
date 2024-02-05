@@ -1,0 +1,14 @@
+{
+    "database": {
+        "user": "dbuser",
+        "password": "dbpassword"
+    },
+    "mqtt": {
+        "broker_uri": "mqtt://broker.address",
+        "client_id": "client123",
+        "password": "mqttpassword"
+    },
+    "aes": {
+        "key": "your_aes_key_here"
+    }
+}
