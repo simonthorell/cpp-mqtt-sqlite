@@ -1,24 +1,29 @@
 #============= Find All Source Files ===============#
-file(GLOB_RECURSE SOURCE_FILES "*.cpp")
+set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/test_file.cpp
+)
 
-#============ Find External Libraries ==============#
-add_library(MyProjectLib ${SOURCE_FILES})
-target_include_directories(MyProjectLib PUBLIC
-    ../include PRIVATE 
+message(STATUS "Source files: ${SOURCE_FILES}")
+
+#================= Find Libraries =================#
+add_library(${PROJECT_NAME}-lib ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME}-lib PUBLIC
+    ../include
     ${json_SOURCE_DIR}/include
 )
 
 #============ Link external libraries ==============#
-target_link_libraries(MyProjectLib PRIVATE
+target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     nlohmann_json::nlohmann_json
+    OpenSSL::Crypto
+    paho-mqtt3as
+    paho-mqttpp3
+    sqlite3
 )
 
 #=============== Add the executable ================#
-add_executable(MyProject ${SOURCE_FILES})
-target_include_directories(MyProject PUBLIC "../include")
+add_executable(${PROJECT_NAME} main.cpp) # Only compile main.cpp for the executable
+target_include_directories(${PROJECT_NAME} PUBLIC ../include)
 
 #========= Link against static libraries ===========#
-# Uncomment to link against external libraries
-target_link_libraries(MyProject PRIVATE 
-    MyProjectLib # Link against the static library
-)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
