@@ -43,8 +43,8 @@ RUN git clone https://github.com/eclipse/paho.mqtt.cpp.git \
     && cmake -Bbuild -H. -DPAHO_BUILD_DOCUMENTATION=FALSE -DPAHO_BUILD_SAMPLES=FALSE \
     && cmake --build build/ --target install -j$(nproc)
 
-# # Clone and build SQLiteCpp
-# RUN git clone https://github.com/SRombauts/SQLiteCpp.git \
-#     && cd SQLiteCpp \
-#     && cmake -Bbuild -H. -DSQLITECPP_BUILD_TESTS=FALSE -DSQLITECPP_BUILD_EXAMPLES=FALSE \
-#     && cmake --build build/ --target install -j$(nproc)
+# Clone and build SQLiteCpp
+RUN git clone https://github.com/SRombauts/SQLiteCpp.git \
+    && cd SQLiteCpp \
+    && cmake -Bbuild -H. -DSQLITECPP_BUILD_TESTS=FALSE -DSQLITECPP_BUILD_EXAMPLES=FALSE \
+    && cmake --build build/ --target install -j$(nproc)
