@@ -40,10 +40,15 @@ MQTTHandler::~MQTTHandler() {
 void MQTTHandler::connect() {
     int rc = mosquitto_connect(mosq, host, port, 60);
     std::cout << "Connecting to MQTT broker..." << std::endl;
-    if (rc) {
+
+    if (rc == 0) {
+        // Successful connection
+        std::cout << "Connected to MQTT broker." << std::endl;
+        mosquitto_loop_start(mosq);
+    } else {
         // Handle failed connect
+        std::cout << "Connection failed with return code: " << rc << std::endl;
     }
-    mosquitto_loop_start(mosq);
 }
 
 void MQTTHandler::disconnect() {

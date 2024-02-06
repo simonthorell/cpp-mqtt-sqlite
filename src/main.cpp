@@ -47,12 +47,12 @@ int main() {
     JSONParser jsonParser;
 
     // Casting string to const char* for the MQTTHandler constructor
-    const char* id = config.getMqttClientId().c_str();
-    const char* host = config.getMqttBrokerURI().c_str();
-    int port = 8883; // Replace with variable later...
+    const char* id = config.getMqttClientId();
+    const char* host = config.getMqttBrokerURI();
+    int port = config.getMqttBrokerPort();
     const char* cafile = "ca_chain.pem";
-    const char* username = config.getMqttUsername().c_str();
-    const char* password = config.getMqttPassword().c_str();
+    const char* username = config.getMqttUsername();
+    const char* password = config.getMqttPassword();
 
     // Initialize the MQTTHandler
     MQTTHandler mqtt(id, host, port, cafile, username, password, jsonParser, db);
@@ -60,7 +60,7 @@ int main() {
     // Connect to the MQTT broker
     mqtt.connect();
     // Subscribe to the topic (casting string to const char*)
-    mqtt.subscribe((config.getMqttTopic().c_str())); 
+    mqtt.subscribe(config.getMqttTopic()); 
 
     // Keep the program running until interrupted from signal
     while (!interrupted.load()) {

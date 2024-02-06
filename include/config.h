@@ -27,12 +27,12 @@ public:
     // Accessor methods
     std::string getDbUser() const;
     std::string getDbPassword() const;
-    std::string getMqttBrokerURI() const;
-    std::string getMqttBrokerPort() const;
-    std::string getMqttClientId() const;
-    std::string getMqttTopic() const;
-    std::string getMqttUsername() const;
-    std::string getMqttPassword() const;
+    const char* getMqttBrokerURI() const;
+    int         getMqttBrokerPort() const;
+    const char* getMqttClientId() const;
+    const char* getMqttTopic() const;
+    const char* getMqttUsername() const;
+    const char* getMqttPassword() const;
     std::string getAesKey() const;
 };
 

@@ -4,6 +4,7 @@
 #include "config.h"
 #include <fstream>
 #include <iostream>
+#include <cstring> // For string manipulation
 
 //==============================================================================
 // Constructor
@@ -24,6 +25,8 @@ void Config::loadConfig(const std::string& defaultConfigPath, const std::string&
     if (userConfigFile.is_open()) {
         userConfigFile >> configData;
         std::cout << "Using configuration from " << userConfigPath << std::endl;
+        // std::cout << "Loaded configuration data: " << configData.dump() << std::endl;
+
     } else {
         std::ifstream defaultConfigFile(defaultConfigPath);
         if (defaultConfigFile.is_open()) {
@@ -36,15 +39,26 @@ void Config::loadConfig(const std::string& defaultConfigPath, const std::string&
     }
     
     // Extract configuration data
-    dbUser = configData.value("database.user", "");
-    dbPassword = configData.value("database.password", "");
-    mqttBrokerURI = configData.value("mqtt.broker_uri", "");
-    mqttBrokerPort = configData.value("mqtt.broker_port", "");
-    mqttClientId = configData.value("mqtt.client_id", "");
-    mqttTopic = configData.value("mqtt.topic", "");
-    mqttUsername = configData.value("mqtt.username", "");
-    mqttPassword = configData.value("mqtt.password", "");
-    aesKey = configData.value("aes.key", "");
+    dbUser = configData["database"]["user"].get<std::string>();
+    dbPassword = configData["database"]["password"].get<std::string>();
+    mqttBrokerURI = configData["mqtt"]["broker_uri"].get<std::string>();
+    mqttBrokerPort = configData["mqtt"]["broker_port"].get<int>();
+    mqttClientId = configData["mqtt"]["client_id"].get<std::string>();
+    mqttTopic = configData["mqtt"]["topic"].get<std::string>();
+    mqttUsername = configData["mqtt"]["username"].get<std::string>();
+    mqttPassword = configData["mqtt"]["password"].get<std::string>();
+    aesKey = configData["aes"]["key"].get<std::string>();
+
+    //Print the configuration
+    // std::cout << "Database User: " << dbUser << std::endl;
+    // std::cout << "Database Password: " << dbPassword << std::endl;
+    // std::cout << "MQTT Broker URI: " << mqttBrokerURI << std::endl;
+    // std::cout << "MQTT Broker Port: " << mqttBrokerPort << std::endl;
+    // std::cout << "MQTT Client ID: " << mqttClientId << std::endl;
+    // std::cout << "MQTT Topic: " << mqttTopic << std::endl;
+    // std::cout << "MQTT Username: " << mqttUsername << std::endl;
+    // std::cout << "MQTT Password: " << mqttPassword << std::endl;
+    // std::cout << "AES Key: " << aesKey << std::endl;
 }
 
 //==============================================================================
@@ -52,10 +66,10 @@ void Config::loadConfig(const std::string& defaultConfigPath, const std::string&
 //==============================================================================
 std::string Config::getDbUser() const { return dbUser; }
 std::string Config::getDbPassword() const { return dbPassword; }
-std::string Config::getMqttBrokerURI() const { return mqttBrokerURI; }
-std::string Config::getMqttBrokerPort() const { return mqttBrokerPort; }
-std::string Config::getMqttClientId() const { return mqttClientId; }
-std::string Config::getMqttTopic() const { return mqttTopic; }
-std::string Config::getMqttUsername() const { return mqttUsername; }
-std::string Config::getMqttPassword() const { return mqttPassword; }
+const char* Config::getMqttBrokerURI() const { return mqttBrokerURI.c_str(); }
+int Config::getMqttBrokerPort() const { return std::stoi(mqttBrokerPort); }
+const char* Config::getMqttClientId() const { return mqttClientId.c_str(); }
+const char* Config::getMqttTopic() const { return mqttTopic.c_str(); }
+const char* Config::getMqttUsername() const { return mqttUsername.c_str(); }
+const char* Config::getMqttPassword() const { return mqttPassword.c_str(); }
 std::string Config::getAesKey() const { return aesKey; }
