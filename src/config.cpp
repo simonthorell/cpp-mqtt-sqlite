@@ -41,6 +41,8 @@ void Config::loadConfig(const std::string& defaultConfigPath, const std::string&
     mqttBrokerURI = configData.value("mqtt.broker_uri", "");
     mqttBrokerPort = configData.value("mqtt.broker_port", "");
     mqttClientId = configData.value("mqtt.client_id", "");
+    mqttTopic = configData.value("mqtt.topic", "");
+    mqttUsername = configData.value("mqtt.username", "");
     mqttPassword = configData.value("mqtt.password", "");
     aesKey = configData.value("aes.key", "");
 }
@@ -53,5 +55,7 @@ std::string Config::getDbPassword() const { return dbPassword; }
 std::string Config::getMqttBrokerURI() const { return mqttBrokerURI; }
 std::string Config::getMqttBrokerPort() const { return mqttBrokerPort; }
 std::string Config::getMqttClientId() const { return mqttClientId; }
+std::string Config::getMqttTopic() const { return mqttTopic; }
+std::string Config::getMqttUsername() const { return mqttUsername; }
 std::string Config::getMqttPassword() const { return mqttPassword; }
 std::string Config::getAesKey() const { return aesKey; }
