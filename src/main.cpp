@@ -47,10 +47,10 @@ int main() {
     JSONParser jsonParser;
 
     // Casting string to const char* for the MQTTHandler constructor
-    const char* id = "MQTTClient";
+    const char* id = config.getMqttClientId().c_str();
     const char* host = config.getMqttBrokerURI().c_str();
     int port = 8883; // Replace with variable later...
-    const char* cafile = "cafile.pem";
+    const char* cafile = "ca_chain.pem";
     const char* username = config.getMqttUsername().c_str();
     const char* password = config.getMqttPassword().c_str();
 
