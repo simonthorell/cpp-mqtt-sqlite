@@ -24,6 +24,7 @@ target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     ${PAHO_MQTT3AS_LIBRARY}
     # paho-mqtt3as
     paho-mqttpp3
+    ${MOSQUITTO_LIB}
     sqlite3
 )
 

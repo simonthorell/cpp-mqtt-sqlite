@@ -38,6 +38,7 @@ find_library(PAHO_MQTT3AS_LIBRARY # Find Paho MQTT C library
     PATHS /usr/local/lib
 )
 find_package(PahoMqttCpp REQUIRED)
+find_library(MOSQUITTO_LIB NAMES mosquitto)
 find_package(OpenSSL REQUIRED)
 find_package(SQLite3 REQUIRED)
 

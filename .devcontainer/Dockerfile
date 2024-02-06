@@ -17,10 +17,6 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 # Install basic dependencies
 #==============================================================================
 
-# [Optional] Uncomment this section to install additional packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-
 # Git, OpenSSL, SSL and SQLite3 development libraries are required to build the dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -28,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     openssl \
     libssl-dev \
     sqlite3 \
+    libmosquitto-dev \
     && rm -rf /var/lib/apt/lists/*
 
 #==============================================================================
@@ -46,15 +43,8 @@ RUN git clone https://github.com/eclipse/paho.mqtt.cpp.git \
     && cmake -Bbuild -H. -DPAHO_BUILD_DOCUMENTATION=FALSE -DPAHO_BUILD_SAMPLES=FALSE \
     && cmake --build build/ --target install -j$(nproc)
 
-# Clone and build SQLiteCpp
-RUN git clone https://github.com/SRombauts/SQLiteCpp.git \
-    && cd SQLiteCpp \
-    && cmake -Bbuild -H. -DSQLITECPP_BUILD_TESTS=FALSE -DSQLITECPP_BUILD_EXAMPLES=FALSE \
-    && cmake --build build/ --target install -j$(nproc)
-
-# Note: This library is header-only, so it will be fetched using CMake's FetchContent
-# Clone and install JSON for Modern C++ (nlohmann/json)
-# RUN git clone https://github.com/nlohmann/json.git \
-#     && cd json \
-#     && cmake -Bbuild -H. \
+# # Clone and build SQLiteCpp
+# RUN git clone https://github.com/SRombauts/SQLiteCpp.git \
+#     && cd SQLiteCpp \
+#     && cmake -Bbuild -H. -DSQLITECPP_BUILD_TESTS=FALSE -DSQLITECPP_BUILD_EXAMPLES=FALSE \
 #     && cmake --build build/ --target install -j$(nproc)
