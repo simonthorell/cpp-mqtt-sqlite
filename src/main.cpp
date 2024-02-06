@@ -31,7 +31,7 @@ int main() {
     // Create a new SQLite3 database
     SQLiteDatabase db("sql_database.db");
 
-    // Define the schema for the users table
+    // Define the schema for the users tablec
     std::string usersTableFields = "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                                    "email TEXT NOT NULL, "
                                    "password TEXT NOT NULL, "
@@ -46,16 +46,17 @@ int main() {
     // Create new JSONParser (Also base64/hex decode and AES-256 decrypt)
     JSONParser jsonParser;
 
-    // Casting string to const char* for the MQTTHandler constructor
-    const char* id = config.getMqttClientId();
-    const char* host = config.getMqttBrokerURI();
-    int port = config.getMqttBrokerPort();
-    const char* cafile = "ca_chain.pem";
-    const char* username = config.getMqttUsername();
-    const char* password = config.getMqttPassword();
-
-    // Initialize the MQTTHandler
-    MQTTHandler mqtt(id, host, port, cafile, username, password, jsonParser, db);
+    // Create an instance of MQTTHandler and pass the required parameters
+    MQTTHandler mqtt(
+        config.getMqttClientId(),       // MQTT Client ID
+        config.getMqttBrokerURI(),      // MQTT Broker URI
+        config.getMqttBrokerPort(),     // MQTT Broker Port
+        config.getMqttCaCertificate(),   // CA Certificate
+        config.getMqttUsername(),       // MQTT Username
+        config.getMqttPassword(),       // MQTT Password
+        jsonParser,                    // JSONParser instance
+        db                             // SQLiteDatabase instance
+    );
 
     // Connect to the MQTT broker
     mqtt.connect();

@@ -11,6 +11,7 @@ private:
     std::string dbPassword;
     std::string mqttBrokerURI;
     int         mqttBrokerPort;
+    std::string mqttCaCertificate;
     std::string mqttTopic;
     std::string mqttUsername;
     std::string mqttClientId;
@@ -29,6 +30,7 @@ public:
     std::string getDbPassword() const;
     const char* getMqttBrokerURI() const;
     int         getMqttBrokerPort() const;
+    const char* getMqttCaCertificate() const;
     const char* getMqttClientId() const;
     const char* getMqttTopic() const;
     const char* getMqttUsername() const;

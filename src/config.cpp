@@ -45,6 +45,7 @@ void Config::loadConfig(const std::string& defaultConfigPath, const std::string&
     dbPassword = configData["database"]["password"].get<std::string>();
     mqttBrokerURI = configData["mqtt"]["broker_uri"].get<std::string>();
     mqttBrokerPort = configData["mqtt"]["broker_port"].get<int>();
+    mqttCaCertificate = configData["mqtt"]["ca_certificate"].get<std::string>();
     mqttClientId = configData["mqtt"]["client_id"].get<std::string>();
     mqttTopic = configData["mqtt"]["topic"].get<std::string>();
     mqttUsername = configData["mqtt"]["username"].get<std::string>();
@@ -70,6 +71,7 @@ std::string Config::getDbUser() const { return dbUser; }
 std::string Config::getDbPassword() const { return dbPassword; }
 const char* Config::getMqttBrokerURI() const { return mqttBrokerURI.c_str(); }
 int         Config::getMqttBrokerPort() const { return mqttBrokerPort; }
+const char* Config::getMqttCaCertificate() const { return mqttCaCertificate.c_str(); }
 const char* Config::getMqttClientId() const { return mqttClientId.c_str(); }
 const char* Config::getMqttTopic() const { return mqttTopic.c_str(); }
 const char* Config::getMqttUsername() const { return mqttUsername.c_str(); }

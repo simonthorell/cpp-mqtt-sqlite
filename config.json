@@ -7,7 +7,7 @@
         "broker_uri": "mqtts.c1c0a115c78a4c76a5eec04966797284.s2.eu.hivemq.cloud",
         "broker_port": 8883,
         "client_id": "test",
-        "ca_file": "ca_chain.pem",
+        "ca_certificate": "ca_chain.pem",
         "topic": "iot23-st/credentials",
         "username": "Esp32-lvgl-hid",
         "password": "Esp32-lvgl-hid"

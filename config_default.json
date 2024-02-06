@@ -4,8 +4,12 @@
         "password": "dbpassword"
     },
     "mqtt": {
-        "broker_uri": "mqtt://broker.address",
-        "client_id": "client123",
+        "broker_uri": "mqtts.broker.address",
+        "broker_port": 8883,
+        "client_id": "test",
+        "ca_certificate": "ca_chain.pem",
+        "topic": "yourtopic/subtopic",
+        "username": "client123",
         "password": "mqttpassword"
     },
     "aes": {
