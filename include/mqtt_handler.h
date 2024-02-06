@@ -2,25 +2,33 @@
 #define MQTT_HANDLER_H
 
 #include <string>
-#include <mqtt/client.h> // Paho MQTT C++ client
+#include <mosquitto.h>
+#include "sqlite_database.h"
+#include "json_parser.h"
 
 class MQTTHandler {
 private:
-    mqtt::client client;
-    std::string topic;
-    int QOS;
-    class callback : public virtual mqtt::callback {
-    public:
-        void message_arrived(mqtt::const_message_ptr msg) override;
-    };
-    callback cb; // Instance of the callback class
+    struct mosquitto* mosq;
+    const char* host;
+    int port;
+    const char* cafile;
+    const char* username;
+    const char* password;
 
+    JSONParser& jsonParser;
+    SQLiteDatabase& db;
 public:
-    MQTTHandler(const std::string& serverURI, const std::string& clientId, const std::string& topic, int QOS);
-    void connect();
-    void subscribe();
-    void disconnect();
-};
+    MQTTHandler(const char* id, const char* host, int port, const char* cafile, const char* username, const char* password, JSONParser& jsonParser, SQLiteDatabase& db);
+    ~MQTTHandler();
 
+    void connect();
+    void disconnect();
+    void subscribe(const char* topic);
+
+    static void on_connect(struct mosquitto* mosq, void* obj, int reason_code);
+    static void on_disconnect(struct mosquitto* mosq, void* obj, int rc);
+    static void on_subscribe(struct mosquitto* mosq, void* obj, int mid, int qos_count, const int* granted_qos);
+    static void on_message(struct mosquitto* mosq, void* obj, const struct mosquitto_message* message);
+};
 
 #endif // MQTT_HANDLER_H

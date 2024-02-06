@@ -1,21 +1,37 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include <csignal>
+#include <atomic>
+
+#include "config.h"
 #include "mqtt_handler.h"
+#include "json_parser.h"
 #include "aes256_decryptor.h"
 #include "salt_generator.h"
 #include "hash_generator.h"
 #include "sqlite_database.h"
 
-// TODO: Replace with secrets from a secure location
-#define MQTT_BROKER_URI "tcp://localhost:1883"
-#define MQTT_CLIENT_ID "client1"
-#define MQTT_TOPIC "test/topic"
-#define MQTT_QOS 1
+std::atomic<bool> interrupted(false);
+
+// Signal handler to terminate the application
+void signalHandler(int signum) {
+    std::cout << "Interrupt signal (" << signum << ") received.\n";
+    interrupted.store(true);
+}
 
 int main() {
-    // Create a new database
+    // Load the configuration file (default if config.json does not exist)
+    Config config("config_default.json", "config.json");
+
+    // Set up signal handling to terminate the application
+    signal(SIGINT, signalHandler);
+    signal(SIGTERM, signalHandler);
+
+    // Create a new SQLite3 database
     SQLiteDatabase db("sql_database.db");
 
-    // Define the schema for the users table
+    // Define the schema for the users tablec
     std::string usersTableFields = "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                                    "email TEXT NOT NULL, "
                                    "password TEXT NOT NULL, "
@@ -27,42 +43,37 @@ int main() {
         return -1;
     }
 
-    // Initialize the MQTTHandler
-    MQTTHandler mqtt(MQTT_BROKER_URI, MQTT_CLIENT_ID, MQTT_TOPIC, MQTT_QOS);
+    // Create new JSONParser (Also base64/hex decode and AES-256 decrypt)
+    JSONParser jsonParser;
 
-    mqtt.connect();    // Connect to the MQTT broker
-    mqtt.subscribe();  // Subscribe to the topic
+    // Create an instance of MQTTHandler and pass the required parameters
+    MQTTHandler mqtt(
+        config.getMqttClientId(),       // MQTT Client ID
+        config.getMqttBrokerURI(),      // MQTT Broker URI
+        config.getMqttBrokerPort(),     // MQTT Broker Port
+        config.getMqttCaCertificate(),   // CA Certificate
+        config.getMqttUsername(),       // MQTT Username
+        config.getMqttPassword(),       // MQTT Password
+        jsonParser,                    // JSONParser instance
+        db                             // SQLiteDatabase instance
+    );
 
-    // Wait for messages to arrive and handle here...
-    while (true) {
-        // TODO: Parse the JSON message from the MQTT topic
-        // TODO: Decrypt email & password using AES256 Decryptor
+    // Connect to the MQTT broker
+    mqtt.connect();
+    // Subscribe to the topic (casting string to const char*)
+    mqtt.subscribe(config.getMqttTopic()); 
 
-        // Dummy user data (Replace with decrypted data from MQTT message)
-        std::string email = "user@example.com";
-        std::string password = "password"; // Store a hashed password, not plain text
-
-        // Generate a secure, random salt for each password
-        SaltGenerator saltGenerator;
-        std::string salt = saltGenerator.generateSalt(12);
-
-        // Salt & Hash the password
-        HashGenerator hashGenerator;
-        std::string saltedPassword = password + salt;
-        std::string hashedPassword = hashGenerator.computeSHA256(saltedPassword);
-
-        // Insert user data into the users table
-        if (!db.insert("users", "email, password, salt", "'" + email + "', '" + hashedPassword + "', '" + salt + "'")) {
-            std::cerr << "Data insertion failed!" << std::endl;
-            return -1;
-        }
+    // Keep the program running until interrupted from signal
+    while (!interrupted.load()) {
+        // Incoming messages are handled by MQTTHandler::handleMessage
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     // Print all data from the users table in SQL database
-    if (!db.selectAllFromTable("users")) {
-        std::cerr << "Failed to select data!" << std::endl;
-        return -1;
-    }
+    // if (!db.selectAllFromTable("users")) {
+    //     std::cerr << "Failed to select data!" << std::endl;
+    //     return -1;
+    // }
 
     // Disconnect from the MQTT broker
     mqtt.disconnect();

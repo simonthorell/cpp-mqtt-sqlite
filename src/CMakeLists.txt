@@ -1,6 +1,7 @@
 #============= Find All Source Files ===============#
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/aes256_decryptor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/hash_generator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/json_parser.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/mqtt_handler.cpp
@@ -20,8 +21,7 @@ target_include_directories(${PROJECT_NAME}-lib PUBLIC
 target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     nlohmann_json::nlohmann_json
     OpenSSL::Crypto
-    paho-mqtt3as
-    paho-mqttpp3
+    ${MOSQUITTO_LIB}
     sqlite3
 )
 
