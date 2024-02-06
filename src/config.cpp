@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iostream>
 #include <cstring> // For string manipulation
+#include <nlohmann/json.hpp>
+#include <string>
 
 //==============================================================================
 // Constructor
@@ -67,7 +69,7 @@ void Config::loadConfig(const std::string& defaultConfigPath, const std::string&
 std::string Config::getDbUser() const { return dbUser; }
 std::string Config::getDbPassword() const { return dbPassword; }
 const char* Config::getMqttBrokerURI() const { return mqttBrokerURI.c_str(); }
-int Config::getMqttBrokerPort() const { return std::stoi(mqttBrokerPort); }
+int         Config::getMqttBrokerPort() const { return mqttBrokerPort; }
 const char* Config::getMqttClientId() const { return mqttClientId.c_str(); }
 const char* Config::getMqttTopic() const { return mqttTopic.c_str(); }
 const char* Config::getMqttUsername() const { return mqttUsername.c_str(); }

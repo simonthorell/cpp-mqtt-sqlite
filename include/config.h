@@ -10,7 +10,7 @@ private:
     std::string dbUser;
     std::string dbPassword;
     std::string mqttBrokerURI;
-    std::string mqttBrokerPort;
+    int         mqttBrokerPort;
     std::string mqttTopic;
     std::string mqttUsername;
     std::string mqttClientId;
