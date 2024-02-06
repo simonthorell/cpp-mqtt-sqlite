@@ -21,9 +21,6 @@ target_include_directories(${PROJECT_NAME}-lib PUBLIC
 target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     nlohmann_json::nlohmann_json
     OpenSSL::Crypto
-    ${PAHO_MQTT3AS_LIBRARY}
-    # paho-mqtt3as
-    paho-mqttpp3
     ${MOSQUITTO_LIB}
     sqlite3
 )
