@@ -46,14 +46,21 @@ int main() {
     // Create new JSONParser (Also base64/hex decode and AES-256 decrypt)
     JSONParser jsonParser;
 
-    // Initialize the MQTTHandler
-    MQTTHandler mqtt(config.getMqttBrokerURI(), 
-                     config.getMqttClientId(), 
-                     config.getMqttPassword(), 
-                     MQTT_QOS, db, jsonParser);
+    // Casting string to const char* for the MQTTHandler constructor
+    const char* id = "MQTTClient";
+    const char* host = config.getMqttBrokerURI().c_str();
+    int port = 8883; // Replace with variable later...
+    const char* cafile = "cafile.pem";
+    const char* username = config.getMqttUsername().c_str();
+    const char* password = config.getMqttPassword().c_str();
 
-    mqtt.connect();    // Connect to the MQTT broker
-    mqtt.subscribe();  // Subscribe to the topic
+    // Initialize the MQTTHandler
+    MQTTHandler mqtt(id, host, port, cafile, username, password, jsonParser, db);
+
+    // Connect to the MQTT broker
+    mqtt.connect();
+    // Subscribe to the topic (casting string to const char*)
+    mqtt.subscribe((config.getMqttTopic().c_str())); 
 
     // Keep the program running until interrupted from signal
     while (!interrupted.load()) {
