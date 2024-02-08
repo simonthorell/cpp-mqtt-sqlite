@@ -7,7 +7,7 @@
         "broker_uri": "mqtts.broker.address",
         "broker_port": 8883,
         "client_id": "test",
-        "ca_certificate": "ca_chain.pem",
+        "ca_certificate": "certs/ca_chain.pem",
         "topic": "yourtopic/subtopic",
         "username": "client123",
         "password": "mqttpassword"
