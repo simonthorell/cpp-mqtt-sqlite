@@ -36,6 +36,7 @@ endif()
 find_library(MOSQUITTO_LIB NAMES mosquitto)
 find_package(OpenSSL REQUIRED)
 find_package(SQLite3 REQUIRED)
+find_package(Boost 1.84 REQUIRED)
 
 #==================== Fetch Libraries =====================#
 # Fetch external libraries
@@ -48,6 +49,13 @@ FetchContent_Declare(
   GIT_TAG v3.11.3
 )
 FetchContent_MakeAvailable(json)
+
+# Fetch the MQTT library as it's a header-only library
+FetchContent_Declare(
+  async-mqtt5
+  GIT_REPOSITORY https://github.com/mireo/async-mqtt5.git
+) # Use the latest version
+FetchContent_MakeAvailable(async-mqtt5)
 
 #=================== Add Subdirectories ===================#
 add_subdirectory(src)

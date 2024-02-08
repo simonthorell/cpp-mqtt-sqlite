@@ -12,6 +12,30 @@
 #include "hash_generator.h"
 #include "sqlite_database.h"
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+void printFileContents(const std::string& filePath) {
+    // Open the file
+    std::ifstream file(filePath);
+
+    // Check if the file was opened successfully
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filePath << std::endl;
+        return;
+    }
+
+    // Read the file contents and print them to the console
+    std::string line;
+    while (std::getline(file, line)) {
+        std::cout << line << std::endl;
+    }
+
+    // Close the file
+    file.close();
+}
+
 std::atomic<bool> interrupted(false);
 
 // Signal handler to terminate the application
@@ -23,6 +47,8 @@ void signalHandler(int signum) {
 int main() {
     // Load the configuration file (default if config.json does not exist)
     Config config("config_default.json", "config.json");
+
+    // printFileContents(config.getMqttCaCertificate());
 
     // Set up signal handling to terminate the application
     signal(SIGINT, signalHandler);
@@ -46,22 +72,24 @@ int main() {
     // Create new JSONParser (Also base64/hex decode and AES-256 decrypt)
     JSONParser jsonParser;
 
-    // Create an instance of MQTTHandler and pass the required parameters
-    MQTTHandler mqtt(
-        config.getMqttClientId(),       // MQTT Client ID
-        config.getMqttBrokerURI(),      // MQTT Broker URI
-        config.getMqttBrokerPort(),     // MQTT Broker Port
-        config.getMqttCaCertificate(),   // CA Certificate
-        config.getMqttUsername(),       // MQTT Username
-        config.getMqttPassword(),       // MQTT Password
-        jsonParser,                    // JSONParser instance
-        db                             // SQLiteDatabase instance
-    );
+    std::string brokerAddress = "c1c0a115c78a4c76a5eec04966797284.s2.eu.hivemq.cloud";
 
-    // Connect to the MQTT broker
-    mqtt.connect();
-    // Subscribe to the topic (casting string to const char*)
-    mqtt.subscribe(config.getMqttTopic()); 
+    // Create an instance of MQTTHandler and pass the required parameters
+    // MqttHandler mqtt(
+    //     brokerAddress,      // MQTT Broker URI
+    //     config.getMqttBrokerPort(),     // MQTT Broker Port
+    //     config.getMqttClientId(),       // MQTT Client ID
+    //     config.getMqttCaCertificate(),   // CA Certificate
+    //     // config.getMqttUsername(),       // MQTT Username
+    //     // config.getMqttPassword(),       // MQTT Password
+    //     // jsonParser,                    // JSONParser instance
+    //     // db                             // SQLiteDatabase instance
+    // );
+
+    // // Connect to the MQTT broker
+    // mqtt.connect();
+    // // Subscribe to the topic (casting string to const char*)
+    // mqtt.subscribe(config.getMqttTopic()); 
 
     // Keep the program running until interrupted from signal
     while (!interrupted.load()) {
@@ -76,10 +104,12 @@ int main() {
     // }
 
     // Disconnect from the MQTT broker
-    mqtt.disconnect();
+    // mqtt.disconnect();
 
     // Close the SQL database
     db.close();
+
+    std::cout << "Program terminated." << std::endl;
 
     return EXIT_SUCCESS;
 }

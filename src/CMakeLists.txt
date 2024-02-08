@@ -23,6 +23,8 @@ target_link_libraries(${PROJECT_NAME}-lib PRIVATE
     OpenSSL::Crypto
     ${MOSQUITTO_LIB}
     sqlite3
+    Boost::headers
+    Async::MQTT5
 )
 
 #=============== Add the executable ================#
